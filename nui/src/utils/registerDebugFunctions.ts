@@ -73,13 +73,14 @@ const MenuObject = {
       },
     ]);
   },
-  announceMsg: ({ message, author }: AddAnnounceData) => {
+  announceMsg: ({ message, author, playSound }: AddAnnounceData) => {
     debugData([
       {
         action: "addAnnounceMessage",
         data: {
           message,
           author,
+          playSound,
         },
       },
     ]);

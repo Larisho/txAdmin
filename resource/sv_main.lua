@@ -30,6 +30,9 @@ TX_VERSION = GetResourceMetadata(GetCurrentResourceName(), 'version') -- for now
 TX_DEBUGMODE = (GetConvar('txAdmin-debugMode', 'false') == 'true') -- TODO: start using this global
 TX_HIDE_ANNOUNCEMENT = (GetConvar('txAdmin-hideDefaultAnnouncement', 'false') == 'true')
 TX_HIDE_DIRECTMESSAGE = (GetConvar('txAdmin-hideDefaultDirectMessage', 'false') == 'true')
+TX_PLAY_NOTIFICATION_SOUND = (GetConvar('txAdmin-playNotificationSound', 'true') == 'true')
+TX_PLAY_ANNOUNCEMENT_SOUND = (GetConvar('txAdmin-playAnnouncementSound', 'true') == 'true')
+TX_PLAY_DIRECTMESSAGE_SOUND = (GetConvar('txAdmin-playDirectMessageSound', 'true') == 'true')
 TX_HIDE_WARNING = (GetConvar('txAdmin-hideDefaultWarning', 'false') == 'true')
 TX_HIDE_SCHEDULEDRESTARTWARNING = (GetConvar('txAdmin-hideDefaultScheduledRestartWarning', 'false') == 'true')
 
@@ -148,7 +151,7 @@ end
 -- Broadcast admin message to all players
 local function handleAnnouncementEvent(eventData)
     if not TX_HIDE_ANNOUNCEMENT then
-        TriggerClientEvent("txAdmin:receiveAnnounce", -1, eventData.message, eventData.author)
+        TriggerClientEvent("txAdmin:receiveAnnounce", -1, eventData.message, eventData.author, TX_PLAY_NOTIFICATION_SOUND or TX_PLAY_ANNOUNCEMENT_SOUND)
     end
     TriggerEvent('txaLogger:internalChatMessage', 'tx', "(Broadcast) "..eventData.author, eventData.message)
 end
@@ -156,7 +159,7 @@ end
 -- Broadcast through an announcement that the server will restart in XX minutes
 local function handleScheduledRestartEvent(eventData)
     if not TX_HIDE_SCHEDULEDRESTARTWARNING then
-        TriggerClientEvent("txAdmin:receiveAnnounce", -1, eventData.translatedMessage, 'txAdmin')
+        TriggerClientEvent("txAdmin:receiveAnnounce", -1, eventData.translatedMessage, 'txAdmin', TX_PLAY_NOTIFICATION_SOUND or TX_PLAY_DIRECTMESSAGE_SOUND)
     end
     TriggerEvent('txaLogger:internalChatMessage', 'tx', "(Broadcast) txAdmin", eventData.translatedMessage)
 end
@@ -164,7 +167,7 @@ end
 -- Sends a direct message from an admin to a player
 local function handleDirectMessageEvent(eventData)
     if not TX_HIDE_DIRECTMESSAGE then
-        TriggerClientEvent("txAdmin:receiveDirectMessage", eventData.target, eventData.message, eventData.author)
+        TriggerClientEvent("txAdmin:receiveDirectMessage", eventData.target, eventData.message, eventData.author, eventData.playSound)
     end
     TriggerEvent('txaLogger:internalChatMessage', 'tx', "(DM) "..eventData.author, eventData.message)
 end

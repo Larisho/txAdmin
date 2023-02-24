@@ -29,21 +29,23 @@ end)
 --  Announcement, DirectMessage and Warn handling
 -- =============================================
 -- Dispatch Announcements
-RegisterNetEvent('txAdmin:receiveAnnounce', function(message, author)
+RegisterNetEvent('txAdmin:receiveAnnounce', function(message, author, playSound)
     sendMenuMessage(
         'addAnnounceMessage',
         {
             message = message,
-            author = author
+            author = author,
+            playSound = playSound
         }
     )
 end)
-RegisterNetEvent('txAdmin:receiveDirectMessage', function(message, author)
+RegisterNetEvent('txAdmin:receiveDirectMessage', function(message, author, playSound)
     sendMenuMessage(
         'addDirectMessage',
         {
             message = message,
-            author = author
+            author = author,
+            playSound = playSound
         }
     )
 end)

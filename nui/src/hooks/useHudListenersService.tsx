@@ -36,6 +36,7 @@ interface AnnounceMessageProps {
 export interface AddAnnounceData {
   message: string;
   author: string;
+  playSound: boolean;
   isDirectMessage: boolean;
 }
 
@@ -169,8 +170,8 @@ export const useHudListenersService = () => {
     setModalOpen(true);
   });
 
-  useNuiEvent<AddAnnounceData>("addAnnounceMessage", ({ message, author }) => {
-    announcementSound.current.play();
+  useNuiEvent<AddAnnounceData>("addAnnounceMessage", ({ message, author, playSound }) => {
+    if (playSound) announcementSound.current.play();
     enqueueSnackbar(
       <AnnounceMessage
         message={message}
@@ -187,8 +188,8 @@ export const useHudListenersService = () => {
     );
   });
 
-  useNuiEvent<AddAnnounceData>("addDirectMessage", ({ message, author }) => {
-    messageSound.current.play();
+  useNuiEvent<AddAnnounceData>("addDirectMessage", ({ message, author, playSound }) => {
+    if (playSound) messageSound.current.play();
     enqueueSnackbar(
       <AnnounceMessage
         message={message}
